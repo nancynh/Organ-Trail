@@ -3,3 +3,11 @@
 //
 
 #include "ofApp.h"
+
+void ofApp::Runner() {
+    
+}
+
+void ofApp::Update() {
+    
+}
