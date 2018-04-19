@@ -28,6 +28,7 @@ public:
     std::string get_race();
     std::string get_age();
     std::string get_gender();
+    void set_health(int health);
     
 };
 #include <stdio.h>

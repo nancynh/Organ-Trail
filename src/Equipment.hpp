@@ -14,7 +14,7 @@
 
 class Equipment {
     
-private:
+protected:
     std::string name_;
     double condition_;
     int price_;
@@ -25,9 +25,6 @@ public:
      */
     bool Is_Broken();
     
-    /* Removes the equipment from the list of items the player has. */
-    void Remove_Equipment(std::vector<Equipment> &equipment_list);  // TODO - I think you use & and not * anyway, check later
-    
     /* Calculates how much the item costs based on how much it has been damaged.
      * The more damage done to the item, the less it costs from the base price.
      * @return the price of the equipment based on its condition
@@ -35,9 +32,11 @@ public:
     int CalculatePrice();
     
     std::string get_name();
-    int get_durability();
-    int get_damage_taken();
+    int get_condition();
     int get_price();
+    void set_condition(int condition);
+    
+    friend bool operator==(const Equipment& lhs, const Equipment& rhs);
 };
 
 #endif /* Equipment_hpp */

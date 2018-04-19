@@ -16,10 +16,10 @@ private:
     
 public:
     /* The player can obtain food. */
-    void Gather_Food();  // maybe add hunting, gathering herbs/berries, or fishing method too. if time, implement in a mini-game for each
+    void Gather_Food(Group& group);  // maybe add hunting, gathering herbs/berries, or fishing method too. if time, implement in a mini-game for each
     
     /* The player can get some water. */
-    void Get_Water();
+    void Get_Water(Group& group);
     
 };
 

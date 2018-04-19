@@ -18,7 +18,7 @@ private:
     double accuracy_;
     
 public:
-    Weapon(std::string name_, int durability_, int damage_taken_, int price_, int attack_, int defense_, int accuracy_);
+    Weapon(std::string name, double condition, int price, int attack, int defense, int accuracy);
     int get_attack();
     int get_defense();
     double get_accuracy();

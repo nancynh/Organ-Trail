@@ -47,6 +47,9 @@ public:
      */
     Time ConvertTimeToHours();
     
+    /* Changes the season to the one that follows after it. */
+    void changeSeason();
+    
     Seasons get_current_season();
     int get_day();
     int get_hour();

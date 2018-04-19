@@ -12,6 +12,13 @@
 #include "Character.hpp"
 
 class Playable : public Character {
+    public : enum CharacterType {
+        BANKER,
+        HUNTER,
+        CARPENTER,
+        DOCTOR,
+        REGULAR
+    };
     
 private:
     
@@ -23,12 +30,13 @@ private:
     int hunger_level_;
     int thirst_level_;
     int kill_count_;
+    CharacterType type_;
     
 public:
     Playable();
     Playable(int health, std::string name, std::string age);
-    Playable(int health, std::string name, std::string age, int kill_count);
-    Playable(int health, std::string name, std::string race, std::string age, std::string gender, int kill_count);   // For customization purposes -> might take out later depending on time?
+    Playable(int health, std::string name, std::string age, int kill_count, CharacterType type);
+    Playable(int health, std::string name, std::string race, std::string age, std::string gender, int kill_count, CharacterType type);   // For customization purposes -> might take out later depending on time?
     
     /* Players keep watch of their own stuff to make sure no one steals it. */
     void KeepWatch();
@@ -61,6 +69,9 @@ public:
     
     int get_hunger_level();
     int get_thrist_level();
+    int get_kill_count();
+    CharacterType get_character_type();
+    void set_kill_count(int amount);
 };
 
 #endif /* Playable_hpp */

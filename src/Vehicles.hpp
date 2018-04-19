@@ -17,7 +17,7 @@ private:
     int cargo_;
     
 public:
-    Vehicle(std::string name, int durability_, int damage_taken_, int price_, int speed_, int cargo_);
+    Vehicle(std::string name, double condition, int price, int speed, int cargo);
     int get_speed();
     int get_cargo();
 };

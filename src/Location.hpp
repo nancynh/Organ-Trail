@@ -12,11 +12,12 @@
 #include <vector>
 #include "Equipment.hpp"
 #include "Playable.hpp"
+#include "Group.hpp"
 
 class Location {
     
-private:
-    std::string name;
+protected:
+    std::string name_;
     
     // How far the place stretches for
     int distance_;
@@ -25,12 +26,12 @@ private:
     std::vector<Equipment> scavenge_items_;
     
 public:
-    Location(int distance);
+    Location(std::string name, int distance);
     
     /* Players can scavange the area for equipment, food, water, and medicine.
-     * @param character - the player to scavange the area
+     * @param player - the player to scavange the area
      */
-    void Scavenge(Playable character);
+    void Scavenge(Playable player);
     
     /* Players can kill zombies in the area. This will also add to the player's kill count.
      * @param player - the player who is killing the zombies

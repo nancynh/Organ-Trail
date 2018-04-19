@@ -58,6 +58,7 @@
 		B9E2D2392085B3FA007FED3A /* Outskirts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9E2D2372085B3FA007FED3A /* Outskirts.cpp */; };
 		B9E2D23C20866A9C007FED3A /* Vehicles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9E2D23A20866A9C007FED3A /* Vehicles.cpp */; };
 		B9E2D23F20866DF6007FED3A /* Weapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9E2D23D20866DF6007FED3A /* Weapon.cpp */; };
+		B9E2D2422086F19F007FED3A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9E2D2402086F19F007FED3A /* Group.cpp */; };
 		C2EEFA6F42D8B7BCEB6A093D /* ActionTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E51B07BC64431AF6D3093D7D /* ActionTarget.cpp */; };
 		CD43DAD40FA2EB18E993153B /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 653AFB4D58C6375F37ACA067 /* ofxBaseGui.cpp */; };
 		D3E48B1A48A4AFE0A5C99BD1 /* ActionVec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F2878FC0721507573F98FB4 /* ActionVec3.cpp */; };
@@ -188,6 +189,8 @@
 		B9E2D23B20866A9C007FED3A /* Vehicles.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vehicles.hpp; sourceTree = "<group>"; };
 		B9E2D23D20866DF6007FED3A /* Weapon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Weapon.cpp; sourceTree = "<group>"; };
 		B9E2D23E20866DF6007FED3A /* Weapon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Weapon.hpp; sourceTree = "<group>"; };
+		B9E2D2402086F19F007FED3A /* Group.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
+		B9E2D2412086F19F007FED3A /* Group.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
 		BED0129FABA9D460FB63C2BC /* EaseInOut.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EaseInOut.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseInOut.h"; sourceTree = SOURCE_ROOT; };
 		C37C7CCF69246B6FCD518AA4 /* MoveAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MoveAction.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/MoveAction.h"; sourceTree = SOURCE_ROOT; };
 		C593BD44C4F73A5AC699E2B9 /* EaseExponential.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EaseExponential.cpp; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseExponential.cpp"; sourceTree = SOURCE_ROOT; };
@@ -421,6 +424,8 @@
 				B9E2D23B20866A9C007FED3A /* Vehicles.hpp */,
 				B9E2D23D20866DF6007FED3A /* Weapon.cpp */,
 				B9E2D23E20866DF6007FED3A /* Weapon.hpp */,
+				B9E2D2402086F19F007FED3A /* Group.cpp */,
+				B9E2D2412086F19F007FED3A /* Group.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -570,6 +575,7 @@
 				1DB3A7E9F88F73080840F246 /* EaseIn.cpp in Sources */,
 				B9E2D2362085B007007FED3A /* City.cpp in Sources */,
 				6EDD0B2EAF11D6DE252B1760 /* EaseInOut.cpp in Sources */,
+				B9E2D2422086F19F007FED3A /* Group.cpp in Sources */,
 				3371F9E61BF9A758DDEF4A1F /* EaseOut.cpp in Sources */,
 				834D49B740B9E5DA55436E82 /* EaseQuadratic.cpp in Sources */,
 				A393DB1F1228748787B8C66B /* EaseQuartic.cpp in Sources */,
