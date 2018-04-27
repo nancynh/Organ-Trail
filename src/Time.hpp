@@ -9,6 +9,7 @@
 #define Time_hpp
 
 #include <stdio.h>
+#include <string>
 
 class Time {
     public : enum Seasons {
@@ -49,6 +50,8 @@ public:
     
     /* Changes the season to the one that follows after it. */
     void changeSeason();
+    
+    std::string to_string();
     
     Seasons get_current_season();
     int get_day();

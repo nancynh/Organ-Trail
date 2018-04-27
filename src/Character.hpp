@@ -9,7 +9,7 @@
 
 #ifndef Character_hpp
 #define Character_hpp
-class Character {
+class Character {   // maybe make this abstract??
 protected:
     int const kMaxHealth = 100;
     int health_;
@@ -19,15 +19,17 @@ protected:
     std::string gender_;    // Customization purposes only
     
 public:
+    Character();
+    
     /* Checks if the character is dead or not.
      * @return true is player's health > 0, false otherwise
      */
-    bool Is_Dead();         // maybe use an enum status, like: alive, dead, zombie, (and maybe busy working?)
-    int get_health();
-    std::string get_name();
-    std::string get_race();
-    std::string get_age();
-    std::string get_gender();
+    bool IsDead() const;         // maybe use an enum status, like: alive, dead, zombie, (and maybe busy working?)
+    int get_health() const;
+    std::string get_name() const;
+    std::string get_race() const;
+    std::string get_age() const;
+    std::string get_gender() const;
     void set_health(int health);
     
 };

@@ -65,6 +65,20 @@ void Time::changeSeason() {
     }
 }
 
+std::string Time::to_string() {
+    std::string output = "Day " + std::to_string(day_) + " of ";
+    if (current_season_ == SPRING) {
+        output += "Spring";
+    } else if (current_season_ == SUMMER) {
+        output += "Summer";
+    } else if (current_season_ == FALL) {
+        output += "Fall";
+    } else {
+        output += "Winter";
+    }
+    return output + "\n";
+}
+
 Time::Seasons Time::get_current_season() {
     return current_season_;
 }

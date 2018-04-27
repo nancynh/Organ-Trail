@@ -45,7 +45,7 @@ Character City::LookForSurvivors(Group& group) {    // TODO - implement in later
     
     // Can't add new members to the group b/c already at the max number
     if (group.get_players_in_group().size() == Group::kMaxNumPlayers) {
-        return Character;
+        return Character();
     }
 }
 

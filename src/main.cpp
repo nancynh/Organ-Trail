@@ -13,5 +13,5 @@ int main() {
     ofSetupOpenGL(1000, 1000, OF_WINDOW);
     ofSetFrameRate(30); // value of 12 in snake game
     
-    // ofRunApp(); //runs the game
+    ofRunApp(new ofApp()); //runs the game
 }

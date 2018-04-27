@@ -20,10 +20,12 @@ protected:
     int price_;
     
 public:
+    Equipment();
+    
     /* Checks if the equipment is broken or not.
      * @return true if condition is at 0%, false otherwise
      */
-    bool Is_Broken();
+    bool IsBroken();
     
     /* Calculates how much the item costs based on how much it has been damaged.
      * The more damage done to the item, the less it costs from the base price.

@@ -17,15 +17,15 @@ class Playable : public Character {
         HUNTER,
         CARPENTER,
         DOCTOR,
-        REGULAR
+        REGULAR_JOE
     };
     
 private:
     
-    // The point at which the player will starve to death
+    // The point at which the player will starve to death, decreases by 20 everyday
     int const kMaxHunger = 100;
     
-    // The point at which th eplayer will die of thirst
+    // The point at which th eplayer will die of thirst, decreases by 10 everyday
     int const kMaxThirst = 30;
     int hunger_level_;
     int thirst_level_;
@@ -34,6 +34,7 @@ private:
     
 public:
     Playable();
+    Playable(std::string name, CharacterType type);
     Playable(int health, std::string name, std::string age);
     Playable(int health, std::string name, std::string age, int kill_count, CharacterType type);
     Playable(int health, std::string name, std::string race, std::string age, std::string gender, int kill_count, CharacterType type);   // For customization purposes -> might take out later depending on time?
@@ -67,11 +68,13 @@ public:
      */
     void Drink(int amount);
     
-    int get_hunger_level();
-    int get_thrist_level();
-    int get_kill_count();
-    CharacterType get_character_type();
+    int get_hunger_level() const;
+    int get_thrist_level() const;
+    int get_kill_count() const;
+    CharacterType get_character_type() const;
     void set_kill_count(int amount);
+    
+    friend bool operator==(const Playable& lhs, const Playable& rhs);
 };
 
 #endif /* Playable_hpp */

@@ -7,6 +7,29 @@
 
 #include "Group.hpp"
 
+Group::Group() {
+    this->current_vehicle_ = nullptr;
+    this->food_amount_ = 0;
+    this->water_amount_ = 0;
+    this->medicine_amount_ = 0;
+    this->money_ = 0;
+}
+
+Group::Group(Vehicle* current_vehicle, int food_amount, int water_amount, int medicine_amount, int money) {
+    this->current_vehicle_ = current_vehicle;
+    this->food_amount_ = food_amount;
+    this->water_amount_ = water_amount;
+    this->medicine_amount_ = medicine_amount;
+    this->money_ = money;
+}
+
+std::string Group::StatInfo() {
+    return "Food: " + std::to_string(food_amount_)
+            + "\nWater: " + std::to_string(water_amount_)
+            + "\nMedicine: " + std::to_string(medicine_amount_)
+            + "\nMoney: " + std::to_string(money_);
+}
+
 void Group::RemoveEquipment(Equipment item) {
     for (int i = 0; i < inventory_.size(); i++) {
         if (item == inventory_[i]) {
@@ -29,11 +52,58 @@ bool Group::InInventory(Equipment item) {
     return false;
 }
 
-Vehicle Group::get_current_vehicle() {
+void Group::AddPlayer(Playable *player) {
+    players_in_group_.push_back(player);
+}
+
+
+void Group::RemovePlayer(Playable *player) {
+    for (int i = 0; i < players_in_group_.size(); i++) {
+        if (*player == *players_in_group_[i]) {
+            players_in_group_.erase(players_in_group_.begin() + i);
+            delete(player);
+            break;
+        }
+    }
+}
+
+void Group::AddFood(int amount) {
+    food_amount_ += amount;
+}
+
+void Group::AddWater(int amount) {
+    water_amount_ += amount;
+}
+
+void Group::AddMedicine(int amount) {
+    medicine_amount_ += amount;
+}
+
+void Group::AddMoney(int amount) {
+    money_ += amount;
+}
+
+void Group::RemoveFood(int amount) {
+    food_amount_ -= amount;
+}
+
+void Group::RemoveWater(int amount) {
+    water_amount_ -= amount;
+}
+
+void Group::RemoveMedicine(int amount) {
+    medicine_amount_ -= amount;
+}
+
+void Group::RemoveMoney(int amount) {
+    money_ -= amount;
+}
+
+Vehicle* Group::get_current_vehicle() {
     return current_vehicle_;
 }
 
-std::vector<Character> Group::get_players_in_group() {
+std::vector<Playable*> Group::get_players_in_group() {
     return players_in_group_;
 }
 
@@ -57,7 +127,7 @@ int Group::get_money() {
     return money_;
 }
 
-void Group::set_current_vehicle(Vehicle vehicle) {
+void Group::set_current_vehicle(Vehicle* vehicle) {
     current_vehicle_ = vehicle;
 }
 

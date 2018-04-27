@@ -12,7 +12,12 @@ Playable::Playable() {
     this->name_ = "Chicken Joe";
     this->age_ = "Adult";
     this->kill_count_ = 0;
-    this->type_ = REGULAR;
+    this->type_ = REGULAR_JOE;
+}
+
+Playable::Playable(std::string name, CharacterType type) {
+    this->name_ = name;
+    this->type_ = type;
 }
 
 Playable::Playable(int health, std::string name, std::string age) {
@@ -89,24 +94,33 @@ void Playable::Drink(int amount) {
     // decreases the total amount of water in the group as well
 }
 
-int Playable::get_hunger_level() {
+int Playable::get_hunger_level() const {
     return hunger_level_;
 }
 
-int Playable::get_thrist_level() {
+int Playable::get_thrist_level() const {
     return thirst_level_;
 }
 
-int Playable::get_kill_count() {
+int Playable::get_kill_count() const {
     return kill_count_;
 }
 
-Playable::CharacterType Playable::get_character_type() {
+Playable::CharacterType Playable::get_character_type() const {
     return type_;
 }
 
 
 void Playable::set_kill_count(int amount) {
     kill_count_ = amount;
+}
+
+bool operator==(const Playable& lhs, const Playable& rhs) {
+    return lhs.get_name() == rhs.get_name()
+    && lhs.get_character_type() == rhs.get_character_type()
+    && lhs.get_health() == rhs.get_health()
+    && lhs.get_kill_count() == rhs.get_kill_count()
+    && lhs.get_thrist_level() == rhs.get_thrist_level()
+    && lhs.get_hunger_level() == rhs.get_hunger_level();
 }
 

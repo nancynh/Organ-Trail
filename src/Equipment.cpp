@@ -7,7 +7,13 @@
 
 #include "Equipment.hpp"
 
-bool Equipment::Is_Broken() {
+Equipment::Equipment() {
+    this->name_ = "";
+    this->condition_ = 0.0;
+    this->price_ = 0;
+}
+
+bool Equipment::IsBroken() {
     return condition_ == 0.0;
 }
 
