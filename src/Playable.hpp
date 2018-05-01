@@ -51,7 +51,7 @@ public:
      * @param character - the character to be healed
      * @param medicine - the amount of medicine the group has
      */
-    void Heal(Character character, int medicine);
+    void Heal(Playable* character, int medicine);
     
     /* Players will be able to kill other characters, both zombies and the living.
      * @param character - the person to be killed

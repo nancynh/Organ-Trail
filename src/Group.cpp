@@ -25,9 +25,9 @@ Group::Group(Vehicle* current_vehicle, int food_amount, int water_amount, int me
 
 std::string Group::StatInfo() {
     return "Food: " + std::to_string(food_amount_)
-            + "              Water: " + std::to_string(water_amount_)
+            + "           Water: " + std::to_string(water_amount_)
             + "\nMedicine: " + std::to_string(medicine_amount_)
-            + "            Money: " + std::to_string(money_);
+            + "         Money: " + std::to_string(money_);
 }
 
 void Group::RemoveEquipment(Equipment item) {

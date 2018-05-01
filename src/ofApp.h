@@ -23,13 +23,21 @@ class ofApp : public ofBaseApp {
         SETUP_TYPE,
         OUTSKIRTS,
         CITY,
-        RATION,
+        RATION_FOOD,
+        RATION_WATER,
+        BUY_ITEM,
+        BUY_AMOUNT,
+        SELL_ITEM,
+        SELL_AMOUNT,
+        HEAL_PERSON,
+        HEAL_AMOUNT,
         END
     };
     
 private:
     ofxTextBlock game_text_;
     std::string user_input_;
+    std::string previous_input_;
     ofTrueTypeFont game_font_;
     ofImage start_bg_;
     ofImage setup_type_bg_;
@@ -37,8 +45,11 @@ private:
     ofImage country_bg_;
     ofImage city_bg_;
     ofImage end_bg_;
-    ofImage ration_bg_;
+    ofImage ration_food_bg_;
+    ofImage ration_water_bg_;
     ofImage message_bg_;
+    ofImage market_bg_;
+    ofImage heal_bg_;
     
     double const kTextWidth = 0.03;
     double const kTextHeight = 0.75;
@@ -55,12 +66,22 @@ private:
     int const kCitySize = 20;
     int const kStartFood = 30;
     int const kStartWater = 30;
+    int const kStartMoney = 20;
+    int const kStartMedicine = 10;
     double const equipment_decay_ = 0.1;
     int distance_left_;
     Time current_time_;
+    int current_hours_;
     Group group;
-    int food_ration_amount = 3;
-    int water_ration_amount = 5;
+    
+    int food_ration_amount;
+    int water_ration_amount;
+    int food_buy_price = 14;
+    int water_buy_price = 9;
+    int medicine_buy_price = 25;
+    int food_sell_price = 7;
+    int water_sell_price = 4;
+    int medicine_sell_price = 15;
     
     void removeSpaces();
     void toLowercase();
@@ -74,14 +95,19 @@ private:
     void drawOutskirtsScreen();
     void drawCityScreen();
     void drawEndScreen();
-    void drawRation();
+    void drawRationFood();
+    void drawRationWater();
+    void drawBuyItem();
+    void drawBuyAmount();
+    void drawSellItem();
+    void drawSellAmount();
+    void drawHealPerson();
+    void drawHealAmount();
     
     void setupGroup();
     void setupPlayer(std::string name);
     void setupType();
-    void rationInput();
     
-    // Every action takes a random amount of hours to do
     void TimePass();
     void Scavenge();
     void Rest();
@@ -91,12 +117,23 @@ private:
     void GatherWater();
     void Travel();
     void Ration();
+    void RationFood();
+    void RationWater();
+    void Buy();
+    void Sell();
+    void BuyItem();
+    void SellItem();
+    void BuyAmount();
+    void SellAmount();
+    void Heal();
+    void HealPerson();
+    void HealAmount();
+    bool findInGroup(std::string name);
     
 public:
     ofApp();
     void setup();
     void update();
-    void runner();
     void reset();
     void draw();
     void keyPressed(int key);

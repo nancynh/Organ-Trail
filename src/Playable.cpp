@@ -61,9 +61,9 @@ void Playable::Fix(Equipment equipment) {
     equipment.set_condition(new_condition);
 }
 
-void Playable::Heal(Character character, int medicine) {
+void Playable::Heal(Playable* character, int medicine) {
     double const kBonus = 0.2;
-    int new_health = character.get_health() + 10;
+    int new_health = character->get_health() + 5 * medicine;
     
     if (this->type_ == DOCTOR) {
         new_health += kMaxHealth * kBonus;
@@ -71,7 +71,7 @@ void Playable::Heal(Character character, int medicine) {
     if (new_health > kMaxHealth) {
         new_health = kMaxHealth;
     }
-    character.set_health(new_health);
+    character->set_health(new_health);
 }
 
 void Playable::Kill(Character character) {  // TODO - implement this in later
