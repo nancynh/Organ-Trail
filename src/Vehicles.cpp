@@ -7,7 +7,7 @@
 
 #include "Vehicles.hpp"
 
-Vehicle::Vehicle(std::string name, double condition, int price, int speed, int cargo) {
+Vehicle::Vehicle(std::string name, double condition, int price, double speed, int cargo) {
     this->name_ = name;
     this->condition_ = condition;
     this->price_ = price;
@@ -15,7 +15,7 @@ Vehicle::Vehicle(std::string name, double condition, int price, int speed, int c
     this->cargo_ = cargo;
 }
 
-int Vehicle::get_speed() {
+double Vehicle::get_speed() {
     return speed_;
 }
 

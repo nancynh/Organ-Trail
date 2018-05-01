@@ -13,12 +13,12 @@
 
 class Vehicle : public Equipment {
 private:
-    int speed_;
+    double speed_;
     int cargo_;
     
 public:
-    Vehicle(std::string name, double condition, int price, int speed, int cargo);
-    int get_speed();
+    Vehicle(std::string name, double condition, int price, double speed, int cargo);
+    double get_speed();
     int get_cargo();
 };
 #endif /* Vehicles_hpp */

@@ -110,9 +110,12 @@ Playable::CharacterType Playable::get_character_type() const {
     return type_;
 }
 
-
 void Playable::set_kill_count(int amount) {
     kill_count_ = amount;
+}
+
+void Playable::set_character_type(Playable::CharacterType type) {
+    type_ = type;
 }
 
 bool operator==(const Playable& lhs, const Playable& rhs) {

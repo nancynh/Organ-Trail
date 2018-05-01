@@ -20,10 +20,18 @@ void ofApp::setup() {
 
     game_font_.load("m5x7.ttf", 45);
     
-    start_bg_.load("test4.png");                   // organtrail.png
-    forest_bg_.load("test1.png");    // full_pixel_art_forest_bg.png
-    country_bg_.load("country-platform-bg.png");        //images are too small - TODO
-    city_bg_.load("test3.png");                 // skill-desc-bg.png                too small, need to fix later
+    start_bg_.load("test4.png");
+    setup_type_bg_.load("setup-type-bg.png");
+    forest_bg_.load("full_pixel_art_forest_bg.png");
+    country_bg_.load("country-platform-bg.png");
+    city_bg_.load("skill-desc-bg.png");
+    end_bg_.load("glacial-mountains-bg.png");
+    ration_bg_.load("ration-bg.png");
+    message_bg_.load("message-bg.png");
+    
+    distance_left_ = kMaxDistance;
+    current_state_ = START;
+    previous_state_ = OUTSKIRTS;
 }
 
 void ofApp::runner() {
@@ -31,9 +39,20 @@ void ofApp::runner() {
 }
 
 void ofApp::update() {
-    if (current_state_ == START) {
-        
+    if (distance_left_ == 0) {
+        previous_state_ = END;
+        current_state_ = END;
+    } if (current_state_ != RATION && current_state_ != START && current_state_ != SETUP_TYPE) {
+        if (distance_left_ % kCityLocation <= kCitySize) {
+            current_state_ = CITY;
+        } else {
+            current_state_ = OUTSKIRTS;
+        }
     }
+    
+    // TODO - somehow make them eat and drink one a day,
+    // group.Eat(food_ration_amount);
+    // group.Drink(water_ration_amount);
 }
 
 void ofApp::reset() {
@@ -43,21 +62,23 @@ void ofApp::reset() {
 void ofApp::draw() {
     if (current_state_ == START) {
         drawStartScreen();
+    } else if (current_state_ == SETUP_TYPE) {
+        drawSetupTypeScreen();
     } else if (current_state_ == OUTSKIRTS) {
         drawOutskirtsScreen();
     } else if (current_state_ == CITY) {
         drawCityScreen();
     } else if (current_state_ == END) {
         drawEndScreen();
+    } else if (current_state_ == RATION) {
+        drawRation();
     }
-    //game_font_.drawString("testttt",  ofGetWidth() * .05 , ofGetHeight() * .75);
-    
-    //game_text_.setText("any dialgoue and story text goes here :)");
-    game_text_.wrapTextArea(ofGetWidth() * 0.95, ofGetHeight() * 0.30);
-    game_text_.draw(ofGetWidth() * 0.05, ofGetHeight());
     
     if (showStatus) {
         drawStatus();
+    }
+    if (displayMessage) {
+        drawMessage();
     }
     
     drawUserInput();
@@ -71,13 +92,8 @@ void ofApp::keyPressed(int key) {
         input();    // need to check if you're at the beginning of the game then take the input
         user_input_ = "";
         return;
-    } /*else if (key == ' ') {
-        continue;   // Joan said  is not good... figure out how to rewrite this
-    } */
-    
-    //int lower_key = tolower(key);
-    
-    user_input_.append (1, (char)key);
+    }
+    user_input_.append (1, (char) key);
 }
 
 void ofApp::removeSpaces() {
@@ -100,65 +116,101 @@ void ofApp::input() {
     // do the actions for the start
     if (current_state_ == START) {
         setupGroup();
-    }
-    
-    // do the actions that you can do anywhere
-    if (user_input_ == "status") {
-        showStatus = TRUE;
         return;
-    } else {
-        showStatus = FALSE;
+    }
+    if (current_state_ == SETUP_TYPE) {
+        setupType();
+        return;
     }
     
+    // do the actions for ration
+    if (current_state_ == RATION) {
+        showStatus = false;
+        rationInput();
+    }
+    
+    showStatus = true;  // once implement in buy/sell system, may have to get rid of this
+    displayMessage = false;
     if (user_input_ == "scavenge") {
         Scavenge();
         return;
-    } else if (user_input_ == "kill zombies") {
+    } else if (user_input_ == "kill zombies") { // TODO - implement this in better
         int random_kill = rand() % 20;
         group.get_players_in_group()[0]->set_kill_count(group.get_players_in_group()[0]->get_kill_count() + random_kill);
         return;
-    }
-    
-    if (current_state_ == OUTSKIRTS) {
-        // do the actions for the outskirts
+    } else if (user_input_ == "rest") {
+        Rest();
         return;
+    } else if (user_input_ == "eat") {
+        Eat();
+        return;
+    } else if (user_input_ == "drink") {
+        Drink();
+        return;
+    } else if (user_input_ == "travel") {
+        Travel();
+        return;
+    } else if (user_input_ == "ration") {
+        Ration();
+        return;
+    }
+
+    if (current_state_ == OUTSKIRTS) {
+        if (user_input_ == "gather food") {
+            GatherFood();
+            return;
+        } else if (user_input_ == "gather water") {
+            GatherWater();
+            return;
+        }
     }
     if (current_state_ == CITY) {
-        // do the actions for city;
-        return;
+        if (user_input_ == "buy") {
+            
+        } else if (user_input_ == "sell") {
+            
+        }
     }
-    
-    if (user_input_ == "city") {
-        current_state_ = CITY;
-    } else if (user_input_ == "outskirts") {
-        current_state_ = OUTSKIRTS;
-    }
-    
-
-    
-    // current_state_ = START;
 }
 
 void ofApp::drawStatus() {
-    std::string stats = current_time_.to_string() + group.StatInfo();
-    ofSetColor(0, 0, 0);
-    game_font_.drawString(stats, ofGetWidth() * 0.03, ofGetHeight() * 0.05);
+    std::string stats = current_time_.to_string() + group.StatInfo()
+                        + "\nDistance Left: " + std::to_string(distance_left_) + " miles";
+    game_font_.drawString(stats, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
+}
+
+void ofApp::drawMessage() {
+    message_bg_.draw(0, ofGetHeight() * .20);
+    game_text_.setText(message);
+    game_text_.wrapTextArea(ofGetWidth() * 0.7, ofGetHeight() * 0.25);
+    game_text_.drawCenter(ofGetWidth() * .5, ofGetHeight() * .25);
 }
 
 void ofApp::drawUserInput() {
     ofSetColor(225, 225, 225);
-    game_font_.drawString(user_input_,  ofGetWidth() * .05 , ofGetHeight() * .80);
+    game_font_.drawString(user_input_,  ofGetWidth() * kTextWidth, ofGetHeight() * 0.98);
 }
 
 void ofApp::drawStartScreen() {
     start_bg_.draw(0, 0);
-    std::string instructions = "Type in your name: ";
-    game_text_.setText(instructions);
+    std::string instructions;
+    if (group.get_players_in_group().size() == 0) {
+        instructions = "Please type in your name: ";
+    } else if (group.get_players_in_group().size() != Group::kMaxNumPlayers) {
+        instructions = "Please type in your other group member's \nname: ";
+    }
+    game_font_.drawString(instructions, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
+}
+
+void ofApp::drawSetupTypeScreen() {
+    setup_type_bg_.draw(0, 0);
+    std::string instructions = "Type in your character class:\n1. banker (money++)    2. hunter (food+ water+)\n3. doctor (medicine++)  4. regular joe (no perks)";
+    game_font_.drawString(instructions, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
 }
 
 void ofApp::drawOutskirtsScreen() {
     country_bg_.draw(0,0);
-    game_font_.drawString(":(", ofGetWidth() * .05 , ofGetHeight() * .80);
+    
 }
 
 void ofApp::drawCityScreen() {
@@ -167,32 +219,77 @@ void ofApp::drawCityScreen() {
 }
 
 void ofApp::drawEndScreen() {
-    forest_bg_.draw(0, 0);  // change this later to the end screen
-
+    end_bg_.draw(0, 0);
+    std::string end_text = "Congratulations! You survived and made it to Alaska!";
+    game_text_.setText(end_text);
+    game_text_.wrapTextArea(ofGetWidth() * 0.90, ofGetHeight() * 0.30);
+    game_text_.draw(ofGetWidth() * kTextWidth, ofGetHeight());
 }
 
-void ofApp::setupGroup() {
-    vector<std::string> names_list;
-    names_list.push_back("Nancy");
-    names_list.push_back("Joan");
-    names_list.push_back("Vivek");
-    names_list.push_back("Jesse");
-    names_list.push_back("Eric");
+void ofApp::drawRation() {
+    ration_bg_.draw(0, 0);
+    std::string text = "How much food should each person get?\n1-4: Saves food, but people will be hungry\n5-9: Sufficient, enough to get by\n10+: Very filling, but wastes a lot of food";
+    game_font_.drawString(text, ofGetWidth() * kTextWidth, ofGetHeight() * 0.75);
+}
+
+void ofApp::setupGroup() {  // Hard-coded this in, maybe will be able to use JSON for C++ or something??
+    group.set_food_amount(kStartFood);
+    group.set_water_amount(kStartWater);
     
-    for (int i = 0; i < Group::kMaxNumPlayers; i++) {
-        setupPlayer(names_list[i]);
+    setupPlayer(user_input_);
+    
+    if (group.get_players_in_group().size() == Group::kMaxNumPlayers) {
+        current_state_ = SETUP_TYPE;
+        previous_state_ = START;
     }
 }
 
 void ofApp::setupPlayer(std::string name) {
-    Playable* player = new Playable(user_input_, Playable::CharacterType::REGULAR_JOE); /** TEST IF THIS WORKS */
+    Playable* player = new Playable(name, Playable::CharacterType::REGULAR_JOE); /** TEST IF THIS WORKS */
     group.AddPlayer(player);
-    delete(player);
+}
+
+void ofApp::setupType() {
+    const int kBonus = 50;
+    if (user_input_ == "banker") {
+        group.get_main_player()->set_character_type(Playable::CharacterType::BANKER);
+        group.AddMoney(kBonus);
+        current_state_ = RATION;
+        previous_state_ = OUTSKIRTS;
+    } else if (user_input_ == "hunter") {
+        group.get_main_player()->set_character_type(Playable::CharacterType::HUNTER);
+        group.AddFood(kBonus / 2);
+        group.AddWater(kBonus / 2);
+        current_state_ = RATION;
+        previous_state_ = OUTSKIRTS;
+    } else if (user_input_ == "doctor") {
+        group.get_main_player()->set_character_type(Playable::CharacterType::DOCTOR);
+        group.AddMedicine(kBonus);
+        current_state_ = RATION;
+        previous_state_ = OUTSKIRTS;
+    } else if (user_input_ == "regular joe") {
+        group.get_main_player()->set_character_type(Playable::CharacterType::REGULAR_JOE);
+        current_state_ = RATION;
+        previous_state_ = OUTSKIRTS;
+    }
+}
+
+void ofApp::rationInput() { // TODO - ration water and food separetly
+    int ration_amount = std::stoi(user_input_);
+    if (ration_amount * group.get_players_in_group().size() > group.get_food_amount() || ration_amount < 0) {
+        displayMessage = true;
+        message = "You don't have enough food to ration " + user_input_ + " for each person";
+        return; // is this the right way to re-ask for input???
+    }
+    displayMessage = false;
+    current_state_ = previous_state_;
+    food_ration_amount = ration_amount;
+    water_ration_amount = ration_amount;    // change this obviously
 }
 
 void ofApp::TimePass() {
     int hours = rand() % 12 + 3;
-    current_time_.AdvanceTime(0, hours);
+    current_time_.AdvanceTime(hours);
     current_time_.ConvertTime();
 }
 
@@ -208,8 +305,61 @@ void ofApp::Scavenge() {
     TimePass();
 }
 
+void ofApp::Rest() {
+    int kSleepTime = 8;
+    current_time_.AdvanceTime(kSleepTime, 0);
+    current_time_.ConvertTime();
+}
 
+void ofApp::Eat() {
+    if (group.get_food_amount() < food_ration_amount) {
+        displayMessage = true;
+        message = "There's not enough food to eat :(";
+        return;
+    }
+    group.Eat(food_ration_amount);
+    TimePass();
+}
 
+void ofApp::Drink() {
+    if (group.get_water_amount() < water_ration_amount) {
+        displayMessage = true;
+        message = "There's not enough water to drink :(";
+        return;
+    }
+    group.Drink(water_ration_amount);
+    TimePass();
+}
+
+void ofApp::GatherFood() {
+    int food_amount = rand() % 50 + 10;
+    group.AddFood(food_amount);
+    TimePass();
+}
+
+void ofApp::GatherWater() {
+    int water_amount = rand() % 25 + 5;
+    group.AddWater(water_amount);
+    TimePass();
+}
+
+void ofApp::Travel() {
+    int amountTravel = rand() % 5 + 1;
+    int travel_time = amountTravel * 3;
+    distance_left_ -= amountTravel;
+    
+    if (group.get_current_vehicle()) {
+        travel_time /= group.get_current_vehicle()->get_speed();
+    }
+    
+    current_time_.AdvanceTime(travel_time, 0);
+    current_time_.ConvertTime();
+}
+
+void ofApp::Ration() {
+    previous_state_ = current_state_;
+    current_state_ = RATION;
+}
 
 
 

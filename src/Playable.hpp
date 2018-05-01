@@ -73,6 +73,7 @@ public:
     int get_kill_count() const;
     CharacterType get_character_type() const;
     void set_kill_count(int amount);
+    void set_character_type(CharacterType type);
     
     friend bool operator==(const Playable& lhs, const Playable& rhs);
 };

@@ -61,15 +61,57 @@ public:
      */
     void RemovePlayer(Playable *player);
     
+    /* Each member in the group eats a certain amount of food.
+     * @param amount - how much each player will eat
+     */
+    void Eat(int amount);
+    
+    /* Each member in the group drinks a certain amount of water.
+     * @param amount - how much each player will drink
+     */
+    void Drink(int amount);
+    
+    /* Adds to the total amount of food in the group.
+     * @param amount - how much is to be added to the total supply
+     */
     void AddFood(int amount);
+    
+    /* Adds to the total amount of water in the group.
+     * @param amount - how much is to be added to the total supply
+     */
     void AddWater(int amount);
+    
+    /* Adds to the total amount of medicine in the group.
+     * @param amount - how much is to be added to the total supply
+     */
     void AddMedicine(int amount);
+    
+    /* Adds to the total amount of money in the group.
+     * @param amount - how much is to be added to the total supply
+     */
     void AddMoney(int amount);
+    
+    /* Subtracts from the total amount of food in the group.
+     * @param amount - how much is to be removed from the total supply
+     */
     void RemoveFood(int amount);
+    
+    /* Subtracts from the total amount of water in the group.
+     * @param amount - how much is to be removed from the total supply
+     */
     void RemoveWater(int amount);
+    
+    /* Subtracts from the total amount of medicine in the group.
+     * @param amount - how much is to be removed from the total supply
+     */
     void RemoveMedicine(int amount);
+    
+    /* Subtracts from the total amount of money in the group.
+     * @param amount - how much is to be removed from the total supply
+     */
     void RemoveMoney(int amount);
     
+    Playable* get_main_player();
     std::vector<Playable*> get_players_in_group();
     std::vector<Equipment> get_inventory();
     Vehicle* get_current_vehicle();
