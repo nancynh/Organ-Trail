@@ -14,7 +14,7 @@
 class City : public Location {
     
 private:
-    std::vector<Character> character_list;
+    std::vector<Player> character_list;
     std::vector<Equipment> items_for_sale_;
     
 public:
@@ -45,14 +45,6 @@ public:
      */
     void SellMultipleItems(Equipment item, int amount, Group& group);
     
-    /* The user can look for surviviors that can join their group.
-     * If they have the maximum of 5 people in their group, the survivor
-     * cannot join the group.
-     * @return the surivior that the user found
-     */
-    Character LookForSurvivors(Group& group);
-    
-    std::vector<Character> get_character_list();
     std::vector<Equipment> get_items_for_sale();
 };
 

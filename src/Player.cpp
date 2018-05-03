@@ -25,19 +25,6 @@ Player::Player(std::string name, CharacterType type) {
     this->thirst_level_ = 0;
 }
 
-void Player::Fix(Equipment equipment) {
-    double const kBonus = 0.2;
-    double new_condition = equipment.get_condition() + 0.1;
-    
-    if (this->type_ == CARPENTER) {
-        new_condition += kBonus;
-    }
-    if (new_condition > 1) {
-        new_condition = 1;
-    }
-    equipment.set_condition(new_condition);
-}
-
 void Player::Heal(Player* character, int medicine) {
     double const kBonus = 0.2;
     int new_health = character->get_health() + 5 * medicine;
@@ -49,10 +36,6 @@ void Player::Heal(Player* character, int medicine) {
         new_health = kMaxHealth;
     }
     character->set_health(new_health);
-}
-
-void Player::Kill(Character character) {  // TODO - implement this in later
-    
 }
 
 void Player::Eat(int amount) {
@@ -141,14 +124,5 @@ bool operator==(const Player& lhs, const Player& rhs) {
     && lhs.get_kill_count() == rhs.get_kill_count()
     && lhs.get_thrist_level() == rhs.get_thrist_level()
     && lhs.get_hunger_level() == rhs.get_hunger_level();
-}
-
-//take out
-void Player::set_hunger_level(int level) {
-    hunger_level_ = level;
-}
-
-void Player::set_thrist_level(int level) {
-    thirst_level_ = level;
 }
 

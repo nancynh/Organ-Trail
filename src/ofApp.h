@@ -120,37 +120,104 @@ private:
     void setupPlayer(std::string name);
     void setupType();
     
+    /* Passes time in the game by a random amount */
     void TimePass();
+    
+    /* The player collects a random amount of food, water, and medicine */
     void Scavenge();
+    
+    /* The player rests, this passes 8 hours */
     void Rest();
+    
+    /* The player eats some food */
     void Eat();
+    
+    /* The player drinks some water*/
     void Drink();
+    
+    /* The player kills a random amount of zombies and it deals
+     * a random amount of damage to a random player */
     void KillZombies();
+    
+    /* The player gets a random amount of food */
     void GatherFood();
+    
+    /* The player gets a random amount of water */
     void GatherWater();
+    
+    /* The player travels a random distance */
     void Travel();
+    
+    /* Starts the rationing procress */
     void Ration();
+    
+    /* Puts in how much food the game should ration out to the group */
     void RationFood();
+    
+    /* Puts in how much water the game should ration out to the group */
     void RationWater();
+    
+    /* Allows the user to start the buying procress */
     void Buy();
+    
+    /* Allows the user to start the selling procress */
     void Sell();
+    
+    /* The user specifies what they want to buy */
     void BuyItem();
+    
+    /* The user specifies what they want to sell */
     void SellItem();
+    
+    /* The user specifies how much they want to buy */
     void BuyAmount();
+    
+    /* The user specifies how much they want to sell */
     void SellAmount();
+    
+    /* The user starts the process to heal a player */
     void Heal();
+    
+    /* The user specifies who they want to heal */
     void HealPerson();
+    
+    /* The user specifies how much medicine they want to use */
     void HealAmount();
+    
+    /* The user starts the process to kill a player */
     void Kill();
+    
+    /* The user specifies who they want to kill */
     void KillPlayer();
+    
+    /* Finds the person in the group
+     * @param name - the name of the person to be found
+     * @return true if found, false otherwise
+     */
     bool findInGroup(std::string name);
+    
+    /* Starts the process if someone's dead */
     void Dead();
+    
+    /* Gives the user commands that they can do */
     void Help();
+    
+    /* Starts the process to show they player's stats */
     void PlayerStats();
+    
+    /* Shows the specified player's stats */
     void ShowPlayerStats();
+    
+    /* Increases the gorup's hunger and thirst level */
     void IncreaseHungerThirstLevel();
+    
+    /* The group eats their rations for the day */
     void GroupRation();
+    
+    /* The prices in the market randomly changes */
     void ChangePrice();
+    
+    /* Checks if any of the players are dead yet */
     void DeathCheck();
         
 public:

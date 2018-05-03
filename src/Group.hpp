@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include <vector>
-#include "Character.hpp"
 #include "Player.hpp"
 #include "Equipment.hpp"
 #include "Vehicles.hpp"

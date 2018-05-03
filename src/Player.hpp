@@ -9,13 +9,12 @@
 #define Playable_hpp
 
 #include <stdio.h>
-#include "Character.hpp"
+#include <string>
 
 class Player {
     public : enum CharacterType {
         BANKER,
         HUNTER,
-        CARPENTER,
         DOCTOR,
         REGULAR_JOE
     };
@@ -40,21 +39,11 @@ public:
     Player();
     Player(std::string name, CharacterType type);
     
-    /* Players can reduce the damaged done to their equipment.
-     * @param equipment - the thing to reduce the damage to
-     */
-    void Fix(Equipment equipment);
-    
     /* Players can heal other characters given that they have enough medicine.
      * @param character - the character to be healed
      * @param medicine - the amount of medicine the group has
      */
     void Heal(Player* character, int medicine);
-    
-    /* Players will be able to kill other characters, both zombies and the living.
-     * @param character - the person to be killed
-     */
-    void Kill(Character character); // Left it as a generic character if player really wanted to kill someone in their own party, a zombie, or a NPC
     
     /* The player eats a certain amount of food.
      * @param amount - how much the player will eat
@@ -95,10 +84,6 @@ public:
     void set_health(int health);
     void set_kill_count(int amount);
     void set_character_type(CharacterType type);
-    
-    // take out later
-    void set_hunger_level(int level);
-    void set_thrist_level(int level);
     
     friend bool operator==(const Player& lhs, const Player& rhs);
 };

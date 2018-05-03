@@ -174,27 +174,6 @@ void ofApp::input() {
         return;
     }
     
-    // take out, testing death system
-    if (user_input_ == "die health") {
-        group.get_players_in_group()[1]->set_health(0);
-    } else if (user_input_ == "die thirst") {
-        group.get_players_in_group()[1]->set_thrist_level(100);
-    } else if (user_input_ == "die hunger") {
-        group.get_players_in_group()[1]->set_hunger_level(100);
-    } else if (user_input_ == "die zombie") {
-        group.get_players_in_group()[1]->set_kill_count(0);
-    }
-    // take out, testing death system
-    if (user_input_ == "health") {
-        group.get_main_player()->set_health(0);
-    } else if (user_input_ == "thirst") {
-        group.get_main_player()->set_thrist_level(100);
-    } else if (user_input_ == "hunger") {
-        group.get_main_player()->set_hunger_level(100);
-    } else if (user_input_ == "zombie") {
-        group.get_main_player()->set_kill_count(0);
-    }
-    
     if (previous_input_ == "help" || previous_input_ == "not found") {
         displayMessage = false;
     }
@@ -422,8 +401,15 @@ void ofApp::setupType() {
 }
 
 void ofApp::GroupRation() {
+    int const kBonus = 3;
     int hunger = 8;
     int thirst = 3;
+    
+    if (current_time_.get_current_season() == Time::WINTER) {
+        hunger += kBonus;
+    } else if (current_time_.get_current_season() == Time::SUMMER) {
+        thirst += kBonus;
+    }
     
     if (group.get_food_amount() == 0) {
         user_hunger_level_ += hunger;
@@ -458,6 +444,8 @@ void ofApp::GroupRation() {
 
 void ofApp::ChangePrice() {
     if (current_state_ == CITY) {
+        
+        // These numbers are just the ranges of prices for the goods
         food_buy_price = rand() % 20 + 14;
         water_buy_price = rand() % 13 + 7;
         medicine_buy_price = rand() % 35 + 25;

@@ -48,7 +48,6 @@
 		9D0ABF222304DFA36422E108 /* Outskirts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6343D08EC0AB7A0DC8B7A15A /* Outskirts.cpp */; };
 		A393DB1F1228748787B8C66B /* EaseQuartic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2558D4550F156AAD039FDCA /* EaseQuartic.cpp */; };
 		A3D475015B83A8D99BCDFFDC /* RepeatAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A74F28634272EFF81BB40489 /* RepeatAction.cpp */; };
-		A4437CE775CBB2AB8CCFC851 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4839401FEACBC730E6C9DCDF /* Character.cpp */; };
 		A7E13E16C66F9DC76FE385C2 /* BezierAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0B9DBF539F33551DECD3597 /* BezierAction.cpp */; };
 		B0F71BF0826A5C394D9180AD /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 68734C650058D475C0359762 /* ofxSliderGroup.cpp */; };
 		B4166198F417377996BEC0AF /* EaseBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA0407F069B198E970201 /* EaseBack.cpp */; };
@@ -133,7 +132,6 @@
 		423AC63403E0962BA730363F /* EaseCircle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EaseCircle.cpp; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseCircle.cpp"; sourceTree = SOURCE_ROOT; };
 		434F0972A3932135B38DC7BE /* VisibilityAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = VisibilityAction.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInstant/VisibilityAction.h"; sourceTree = SOURCE_ROOT; };
 		43DDF7CC3F25E52777F9AB1D /* EaseBezierAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EaseBezierAction.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseBezierAction.h"; sourceTree = SOURCE_ROOT; };
-		4839401FEACBC730E6C9DCDF /* Character.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Character.cpp; path = src/Character.cpp; sourceTree = SOURCE_ROOT; };
 		4996163C8ADE3F78AB409203 /* TintAction.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = TintAction.cpp; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/TintAction.cpp"; sourceTree = SOURCE_ROOT; };
 		49DCA0407F069B198E970201 /* EaseBack.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EaseBack.cpp; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseBack.cpp"; sourceTree = SOURCE_ROOT; };
 		4A267A8BFE4C6B94C9B82BAF /* ActionManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ActionManager.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionManager.h"; sourceTree = SOURCE_ROOT; };
@@ -202,7 +200,6 @@
 		D86258C04948EB6585D83F7D /* RepeatAction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RepeatAction.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/RepeatAction.h"; sourceTree = SOURCE_ROOT; };
 		DAD15A503CEBA217CBDE6F62 /* EaseIn.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EaseIn.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseIn.h"; sourceTree = SOURCE_ROOT; };
 		DBF42E84CA94E58318C3A2C8 /* EaseOut.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EaseOut.h; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseOut.h"; sourceTree = SOURCE_ROOT; };
-		DBFDBCA17A5E5945031639DF /* Character.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Character.hpp; path = src/Character.hpp; sourceTree = SOURCE_ROOT; };
 		E2558D4550F156AAD039FDCA /* EaseQuartic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = EaseQuartic.cpp; path = "../../../../Applications/of_v0.9.8_osx_release/addons/ofxActionManager-master/src/ActionInterval/Easings/EaseQuartic.cpp"; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../../Applications/of_v0.9.8_osx_release/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* final-project-nancynhDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "final-project-nancynhDebug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -429,8 +426,6 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				4839401FEACBC730E6C9DCDF /* Character.cpp */,
-				DBFDBCA17A5E5945031639DF /* Character.hpp */,
 				00E6CDE14F41CC58EF8604CA /* City.cpp */,
 				3B6257F1465D6051B49472BF /* City.hpp */,
 				C7D8A3A1CEFE0487BE80A0FA /* Equipment.cpp */,
@@ -579,7 +574,6 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
-				A4437CE775CBB2AB8CCFC851 /* Character.cpp in Sources */,
 				74F83F283A17AB2783F2E9F7 /* City.cpp in Sources */,
 				0F731DFD818F9146E4861B37 /* Equipment.cpp in Sources */,
 				D55170E94C2E8B38D3DC6454 /* Group.cpp in Sources */,
