@@ -1,8 +1,11 @@
 # Development
-## Week 1:
+## Week 1 (April 13 - April 20):
+I attempted to use my original outside C++ library, *Godot*, however it proved to be difficult to set up. Then I spent some time trying to use other game engine libraries but they provided no luck either. So, I ended up writing the back end code of the game instead which did not need any sort of interaction with the interface (at the moment at least). I wasn't too sure what C++ library I was going to use for the project seeing how the one I was originally going to use didn't work out.
 
-## Week 2:
-Writing a user interface took a lot longer than I thought it would. OpenFrameworks is not that nice when it comes to taking in user input via text commands. The biggest issue with OpenFrameworks (and C++ in general) is that it's hard to modify input. For example, if the user were to input multiple spaces in between commands and then the program removed all of the extra spaces, the program would show the colorful wheel of death (aka buffering symbol on Mac). Also, another issue was being able to wrap the text back around. Thankfully, with the help of ofxTextSuite, it allowed me to define an area to have the text go back around.
+## Week 2 (April 21 - April 27):
+Writing a user interface took a lot longer than I thought it would. OpenFrameworks is not that nice when it comes to taking in user input via text commands. The biggest issue with OpenFrameworks (and C++ in general) is that it's hard to modify input. For example, if the user were to input multiple spaces in between commands and then the program removed all of the extra spaces, the program would show the colorful wheel of death (aka buffering symbol on Mac). Also, another issue was being able to wrap the text back around and center align the text. Thankfully, with the help of ofxTextSuite, it allowed me to define an area to have the text go back around, and center align it. So, ofxTextSuite (and others later on) became my C++ library. In addition, I did some work digging around for art to use in the game.
 
-## Week 3:
-Ughh
+## Week 3 (April 28 - May 2):
+I started working on the various features of the game. I expanded the input system to more than just the basic commands. This lead to me implementing in ration, market, and heal system for the player. Also, allowing the user to be able to choose what kind of character type they want to be, and choosing names for the people in their group. Finally, I didn't have this part done by the time I presented, but I allowed the players to die based on their hunger, thirst, and health (or if they're killed by the user). The most difficult part of all of this was setting it up and allowing the user to input things that are related to each other and making sure the user's input wasn't faulty.
+ * Ex. You type in a command like *buy*. Then the game asks you "what do you want to buy?" then you say *food*. Finally, the game asks "how much food do you want to buy?" and you type in some number.
+The death system didn't turned out quite how I wanted to though. I kept getting a BAD_ACCESS error, and found out I have to use smart pointers instead of regular pointers. Unfortunately, I didn't think I had enough time to rework everything so I worked around it. The system is ok - at the very least people die when they need to.

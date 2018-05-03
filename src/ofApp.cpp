@@ -9,7 +9,7 @@ ofApp::ofApp() {
 }
 
 void ofApp::setup() {
-    ofSetWindowTitle("Oregon Trail: Zombified");
+    ofSetWindowTitle("Organ Trail");
     ofSetBackgroundColor(0, 0, 0);
     user_input_ = "";
     
