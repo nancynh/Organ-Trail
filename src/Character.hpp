@@ -24,7 +24,7 @@ public:
     /* Checks if the character is dead or not.
      * @return true is player's health > 0, false otherwise
      */
-    bool IsDead() const;         // maybe use an enum status, like: alive, dead, zombie, (and maybe busy working?)
+    bool IsDead() const;
     int get_health() const;
     std::string get_name() const;
     std::string get_race() const;

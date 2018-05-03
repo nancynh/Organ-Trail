@@ -56,6 +56,7 @@ public:
     Seasons get_current_season();
     int get_day();
     int get_hour();
+    void set_time(Time::Seasons season, int day, int hour);
 };
 
 #endif /* Time_hpp */

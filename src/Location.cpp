@@ -12,14 +12,6 @@ Location::Location(std::string name, int distance) {
     this->distance_ = distance;
 }
 
-void Location::Scavenge(Playable player) {     // TODO - not sure if I want to based it off the player or the group
-
-}
-
-void Location::KillZombies(Playable player) {  // TODO - not sure if I want to based it off the player or the group
-    
-}
-
 std::string Location::get_name() {
     return name_;
 }

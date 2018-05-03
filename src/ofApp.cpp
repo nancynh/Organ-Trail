@@ -9,7 +9,7 @@ ofApp::ofApp() {
 }
 
 void ofApp::setup() {
-    ofSetWindowTitle("CS 126 Final Project");
+    ofSetWindowTitle("Oregon Trail: Zombified");
     ofSetBackgroundColor(0, 0, 0);
     user_input_ = "";
     
@@ -31,6 +31,7 @@ void ofApp::setup() {
     message_bg_.load("message-bg.png");
     market_bg_.load("market-bg.png");
     heal_bg_.load("heal-bg.png");
+    dead_bg_.load("dead-bg.png");
     
     distance_left_ = kMaxDistance;
     current_state_ = START;
@@ -54,22 +55,16 @@ void ofApp::update() {
     
     int kHoursInDay = 24;
     if (current_hours_ / kHoursInDay > 0) {
-        
-        // Group eats their respective rations
-        group.Eat(food_ration_amount);
-        group.Drink(water_ration_amount);
         current_hours_ = current_hours_ % kHoursInDay;
+
+        // Group eats their respective rations
+        GroupRation();
         
         // Change the price randomly in the market
-        if (current_state_ == CITY) {
-            food_buy_price = rand() % 20 + 14;
-            water_buy_price = rand() % 13 + 7;
-            medicine_buy_price = rand() % 35 + 25;
-            
-            food_sell_price = rand() % 9 + 5;
-            water_sell_price = rand() % 5 + 1;
-            medicine_sell_price = rand() % 18 + 10;
-        }
+        ChangePrice();
+        
+        // Checks if anyone has died yet
+        DeathCheck();
     }
 }
 
@@ -104,6 +99,12 @@ void ofApp::draw() {
         drawHealPerson();
     } else if (current_state_ == HEAL_AMOUNT) {
         drawHealAmount();
+    } else if (current_state_ == KILL_PLAYER) {
+        drawKillPlayer();
+    } else if (current_state_ == DEAD) {
+        drawDead();
+    } else if (current_state_ == PLAYER_STATS) {
+        drawPlayerStats();
     }
     
     if (showStatus) {
@@ -124,22 +125,11 @@ void ofApp::keyPressed(int key) {
         input();
         user_input_ = "";
         return;
+    } else if (key == OF_KEY_TAB) {
+        screenshot_.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        screenshot_.save("SCREENSHOT.png");
     }
     user_input_.append (1, (char) key);
-}
-
-void ofApp::removeSpaces() {
-    for (int i = 0; i < user_input_.size() - 1; i++) {
-        if (user_input_.at(i) == ' ' && user_input_.at(i + 1) == ' ') {
-            user_input_ = user_input_.substr(i) + user_input_.substr(i + 1);
-        }
-    }
-    if (user_input_.at(0) == ' ') {
-        user_input_ = user_input_.substr(1);
-    }
-    if (user_input_.at(user_input_.size() - 1) == ' ') {
-        user_input_ = user_input_.substr(user_input_.size() - 1);
-    }
 }
 
 void ofApp::input() {
@@ -173,15 +163,47 @@ void ofApp::input() {
     } else if (current_state_ == HEAL_AMOUNT) {
         HealAmount();
         return;
+    } else if (current_state_ == KILL_PLAYER) {
+        KillPlayer();
+        return;
+    } else if (current_state_ == PLAYER_STATS) {
+        ShowPlayerStats();
+        return;
+    } else if (current_state_ == DEAD) {
+        Dead();
+        return;
     }
     
-    //displayMessage = false;
+    // take out, testing death system
+    if (user_input_ == "die health") {
+        group.get_players_in_group()[1]->set_health(0);
+    } else if (user_input_ == "die thirst") {
+        group.get_players_in_group()[1]->set_thrist_level(100);
+    } else if (user_input_ == "die hunger") {
+        group.get_players_in_group()[1]->set_hunger_level(100);
+    } else if (user_input_ == "die zombie") {
+        group.get_players_in_group()[1]->set_kill_count(0);
+    }
+    // take out, testing death system
+    if (user_input_ == "health") {
+        group.get_main_player()->set_health(0);
+    } else if (user_input_ == "thirst") {
+        group.get_main_player()->set_thrist_level(100);
+    } else if (user_input_ == "hunger") {
+        group.get_main_player()->set_hunger_level(100);
+    } else if (user_input_ == "zombie") {
+        group.get_main_player()->set_kill_count(0);
+    }
+    
+    if (previous_input_ == "help" || previous_input_ == "not found") {
+        displayMessage = false;
+    }
+    
     if (user_input_ == "scavenge") {
         Scavenge();
         return;
-    } else if (user_input_ == "kill zombies") { // TODO - implement this in better
-        int random_kill = rand() % 20;
-        group.get_players_in_group()[0]->set_kill_count(group.get_players_in_group()[0]->get_kill_count() + random_kill);
+    } else if (user_input_ == "kill zombies") {
+        KillZombies();
         return;
     } else if (user_input_ == "rest") {
         Rest();
@@ -201,6 +223,16 @@ void ofApp::input() {
     } else if (user_input_ == "heal") {
         Heal();
         return;
+    } else if (user_input_ == "kill") {
+        Kill();
+        return;
+    } else if (user_input_ == "help") {
+        Help();
+        previous_input_ = "help";
+        return;
+    } else if (user_input_ == "player stats") {
+        PlayerStats();
+        return;
     }
 
     if (current_state_ == OUTSKIRTS) {
@@ -212,7 +244,7 @@ void ofApp::input() {
             return;
         }
     }
-    if (current_state_ == CITY) {   // TODO - test if this works
+    if (current_state_ == CITY) {
         if (user_input_ == "buy") {
             Buy();
         } else if (user_input_ == "sell") {
@@ -222,8 +254,11 @@ void ofApp::input() {
 }
 
 void ofApp::drawStatus() {
-    std::string stats = current_time_.to_string() + group.StatInfo()
-                        + "\nDistance Left: " + std::to_string(distance_left_) + " miles";
+    std::string stats = current_time_.to_string() +
+                        "          Distance Left: " + std::to_string(distance_left_) + "\n"
+                        + group.StatInfo()
+                        + "\nHunger: " + std::to_string(user_hunger_level_)
+                        + " / 100" + "          Thirst: " + std::to_string(user_thirst_level_) + " / 30";
     game_font_.drawString(stats, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
 }
 
@@ -324,6 +359,24 @@ void ofApp::drawHealAmount() {
     game_font_.drawString(text, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
 }
 
+void ofApp::drawKillPlayer() {
+    start_bg_.draw(0, 0);
+    std::string text = "Who do you want to kill?";
+    game_font_.drawString(text, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
+}
+
+void ofApp::drawDead() {
+    dead_bg_.draw(0, 0);
+    std::string text = "You died from " + previous_input_ + "!\nGame over.";
+    game_font_.drawString(text, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
+}
+
+void ofApp::drawPlayerStats() {
+    start_bg_.draw(0, 0);
+    std::string text = "Who's stats do you want to see?";
+    game_font_.drawString(text, ofGetWidth() * kTextWidth, ofGetHeight() * kTextHeight);
+}
+
 void ofApp::setupGroup() {
     group.set_food_amount(kStartFood);
     group.set_water_amount(kStartWater);
@@ -339,32 +392,112 @@ void ofApp::setupGroup() {
 }
 
 void ofApp::setupPlayer(std::string name) {
-    Playable* player = new Playable(name, Playable::CharacterType::REGULAR_JOE);
+    Player* player = new Player(name, Player::CharacterType::REGULAR_JOE);
     group.AddPlayer(player);
 }
 
 void ofApp::setupType() {
     const int kBonus = 50;
     if (user_input_ == "banker") {
-        group.get_main_player()->set_character_type(Playable::CharacterType::BANKER);
+        group.get_main_player()->set_character_type(Player::CharacterType::BANKER);
         group.AddMoney(kBonus);
         current_state_ = RATION_FOOD;
         previous_state_ = OUTSKIRTS;
     } else if (user_input_ == "hunter") {
-        group.get_main_player()->set_character_type(Playable::CharacterType::HUNTER);
+        group.get_main_player()->set_character_type(Player::CharacterType::HUNTER);
         group.AddFood(kBonus / 2);
         group.AddWater(kBonus / 2);
         current_state_ = RATION_FOOD;
         previous_state_ = OUTSKIRTS;
     } else if (user_input_ == "doctor") {
-        group.get_main_player()->set_character_type(Playable::CharacterType::DOCTOR);
+        group.get_main_player()->set_character_type(Player::CharacterType::DOCTOR);
         group.AddMedicine(kBonus);
         current_state_ = RATION_FOOD;
         previous_state_ = OUTSKIRTS;
     } else if (user_input_ == "regular joe") {
-        group.get_main_player()->set_character_type(Playable::CharacterType::REGULAR_JOE);
+        group.get_main_player()->set_character_type(Player::CharacterType::REGULAR_JOE);
         current_state_ = RATION_FOOD;
         previous_state_ = OUTSKIRTS;
+    }
+}
+
+void ofApp::GroupRation() {
+    int hunger = 8;
+    int thirst = 3;
+    
+    if (group.get_food_amount() == 0) {
+        user_hunger_level_ += hunger;
+        group_hunger_level_ += hunger;
+    } else {
+        group.Eat(food_ration_amount);
+        user_hunger_level_ += hunger - food_ration_amount;
+        group_hunger_level_ += hunger - food_ration_amount;
+    }
+    if (group.get_water_amount() == 0) {
+        user_thirst_level_ += thirst;
+        group_thirst_level_ += thirst;
+    } else {
+        group.Drink(water_ration_amount);
+        user_thirst_level_ += thirst - water_ration_amount;
+        group_thirst_level_ += thirst - water_ration_amount;
+    }
+    
+    if (user_thirst_level_ < 0) {
+        user_thirst_level_ = 0;
+    }
+    if (group_thirst_level_ < 0) {
+        group_thirst_level_ = 0;
+    }
+    if (user_hunger_level_ < 0) {
+        user_hunger_level_ = 0;
+    }
+    if (group_hunger_level_ < 0) {
+        group_hunger_level_ = 0;
+    }
+}
+
+void ofApp::ChangePrice() {
+    if (current_state_ == CITY) {
+        food_buy_price = rand() % 20 + 14;
+        water_buy_price = rand() % 13 + 7;
+        medicine_buy_price = rand() % 35 + 25;
+        
+        food_sell_price = rand() % 9 + 5;
+        water_sell_price = rand() % 5 + 1;
+        medicine_sell_price = rand() % 18 + 10;
+    }
+}
+
+void ofApp::DeathCheck() {
+    if (user_hunger_level_ >= Player::kMaxHunger) {
+        current_state_ = DEAD;
+        previous_input_ = "starvation";
+    } else if (user_thirst_level_ >= Player::kMaxThirst) {
+        current_state_ = DEAD;
+        previous_input_ = "dehydration";
+    } else if (group.get_main_player()->get_health() <= 0) {
+        current_state_ = DEAD;
+        previous_input_ = "poor health";
+    } else if (group_hunger_level_ >= Player::kMaxHunger) {
+        displayMessage = true;
+        message = "Congrats. Everyone but you died from starvation. You didn't follow the rations, did you?";
+        previous_input_ = "not found";
+        group.RemoveAllGroupMembers();
+    } else if (group_thirst_level_ >= Player::kMaxThirst) {
+        displayMessage = true;
+        message = "Congrats. Everyone but you died from dehydration. You didn't follow the rations, did you?";
+        previous_input_ = "not found";
+        group.RemoveAllGroupMembers();
+    } else {
+        for (int i = 1; i < group.get_players_in_group().size(); i++) {
+            if (group.get_players_in_group()[i]->get_health() <= 0) {
+                displayMessage = true;
+                message = group.get_players_in_group()[i]->get_name() + " died from poor health. Why didn't you heal them?";
+                previous_input_ = "not found";
+                group.RemovePlayer(group.get_players_in_group()[i]);
+                break;
+            }
+        }
     }
 }
 
@@ -421,6 +554,10 @@ void ofApp::Rest() {
 void ofApp::Eat() {
     if (group.get_food_amount() < food_ration_amount) {
         displayMessage = true;
+        message = "There's not enough food for you to eat\n(Change the rations to be able to eat the leftovers)";
+        return;
+    } else if (group.get_food_amount() < 0) {
+        displayMessage = true;
         message = "There's not enough food for you to eat";
         return;
     }
@@ -430,7 +567,11 @@ void ofApp::Eat() {
 }
 
 void ofApp::Drink() {
-    if (group.get_water_amount() < water_ration_amount) {
+    if (group.get_water_amount() < water_ration_amount || group.get_water_amount() < 0) {
+        displayMessage = true;
+        message = "There's not enough water for you to drink\n(Change the rations to be able to drink the leftovers)";
+        return;
+    }  else if (group.get_water_amount() < 0) {
         displayMessage = true;
         message = "There's not enough water for you to drink";
         return;
@@ -438,6 +579,19 @@ void ofApp::Drink() {
     group.get_main_player()->Drink(water_ration_amount);
     group.RemoveWater(water_ration_amount);
     TimePass();
+}
+
+void ofApp::KillZombies() {
+    int random_kill = rand() % 20;
+    group.get_main_player()->set_kill_count(group.get_main_player()->get_kill_count() + random_kill);
+    displayMessage = true;
+    message = "You killed " + std::to_string(random_kill) + " zombies";
+    previous_input_ = "not found";
+    
+    // Randomly does damage to one player in the group
+    int index = rand() % group.get_players_in_group().size();
+    int damage = rand() % 13 + 1;
+    group.DecreaseHealth(index, damage); 
 }
 
 void ofApp::GatherFood() {
@@ -595,10 +749,13 @@ void ofApp::Heal() {
 
 void ofApp::HealPerson() {
     bool name_found = findInGroup(user_input_);
-    if (!name_found) {
+    if (!name_found && user_input_ != "myself") {
         displayMessage = true;
         message = user_input_ + " is not in your group";
         return;
+    }
+    if (user_input_ == "myself") {
+        previous_input_ = "0";
     }
     displayMessage = false;
     current_state_ = HEAL_AMOUNT;
@@ -616,8 +773,7 @@ void ofApp::HealAmount() {
         return;
     }
     
-    Playable* heal_player = group.get_players_in_group()[std::stoi(previous_input_)];
-    heal_player->set_health(20);
+    Player* heal_player = group.get_players_in_group()[std::stoi(previous_input_)];
     group.get_main_player()->Heal(heal_player, amount);
     
     displayMessage = false;
@@ -627,6 +783,32 @@ void ofApp::HealAmount() {
     if (amount != 0) {
         TimePass();
     }
+}
+
+void ofApp::Kill() {
+    previous_state_ = current_state_;
+    current_state_ = KILL_PLAYER;
+}
+
+void ofApp::KillPlayer() {
+    bool name_found = findInGroup(user_input_);
+    if (!name_found && user_input_ != "myself") {
+        displayMessage = true;
+        message = user_input_ + " is not in your group";
+        return;
+    }
+    if (user_input_ == group.get_main_player()->get_name() || user_input_ == "myself") {
+        previous_input_ = "killing yourself (wow was the\nZombie Apocalpyse too much for you?)";
+        current_state_ = DEAD;
+        displayMessage = false;
+        return;
+    }
+    group.RemovePlayer(group.get_players_in_group()[std::stoi(previous_input_)]);
+    displayMessage = true;
+    message = "You killed " + user_input_ + "! ... you seem to have a lot more food now though.";
+    group.AddFood(100);
+    previous_input_ = "not found";
+    current_state_ = previous_state_;
 }
 
 bool ofApp::findInGroup(std::string name) {
@@ -639,7 +821,56 @@ bool ofApp::findInGroup(std::string name) {
     return false;
 }
 
+void ofApp::Dead() {
+    displayMessage = true;
+    message = "You can't continue the game. Please restart.";
+}
 
+void ofApp::Help() {
+    displayMessage = true;
+    message = "You can: scavenge, kill zombies, rest, eat, drink, travel, ration, player stats, ";
+    if (current_state_ == CITY) {
+        message += "heal, buy, and sell";
+    } else if (current_state_ == OUTSKIRTS) {
+        message += "heal, gather food, and gather water";
+    } else {
+        message += " and heal";
+    }
+}
+
+void ofApp::PlayerStats() {
+    previous_state_ = current_state_;
+    current_state_ = PLAYER_STATS;
+}
+
+void ofApp::ShowPlayerStats() {
+    bool name_found = findInGroup(user_input_);
+    if (!name_found) {
+        displayMessage = true;
+        message = user_input_ + " is not in your group";
+        return;
+    }
+    displayMessage = true;
+    message = group.get_players_in_group()[std::stoi(previous_input_)]->Stats();
+    if (user_input_ == group.get_main_player()->get_name()) {
+        message = "Hunger: " + std::to_string(user_hunger_level_)
+        + " / 100" + " Thirst: " + std::to_string(user_thirst_level_) + " / 30";
+    } else {
+        message = "Hunger: " + std::to_string(group_hunger_level_)
+        + " / 100" + " Thirst: " + std::to_string(group_thirst_level_) + " / 30";
+    }
+    previous_input_ = "not found";
+    current_state_ = previous_state_;
+}
+
+void ofApp::IncreaseHungerThirstLevel() {
+    int hunger = 8;
+    int thirst = 3;
+    user_hunger_level_ += hunger;
+    user_thirst_level_ += thirst;
+    group_hunger_level_ += hunger;
+    group_thirst_level_ += thirst;
+}
 
 //---------------------------------------------------
 

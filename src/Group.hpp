@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include <vector>
 #include "Character.hpp"
-#include "Playable.hpp"
+#include "Player.hpp"
 #include "Equipment.hpp"
 #include "Vehicles.hpp"
 
 class Group {
 private:
-    std::vector<Playable*> players_in_group_;
+    std::vector<Player*> players_in_group_;
     std::vector<Equipment> inventory_; // Maybe change this to a map?
     Vehicle* current_vehicle_;
     int food_amount_;
@@ -54,12 +54,15 @@ public:
     /* Adds a player to the group.
      * @param player - the player to be added into the group
      */
-    void AddPlayer(Playable *player);
+    void AddPlayer(Player* player);
     
     /* Removes a player from the group.
      * @param player - the player to be removed from the group
      */
-    void RemovePlayer(Playable *player);
+    void RemovePlayer(Player* player);
+    
+    /* Removes everyone in the group except the user themself. */
+    void RemoveAllGroupMembers();
     
     /* Each member in the group eats a certain amount of food.
      * @param amount - how much each player will eat
@@ -111,8 +114,14 @@ public:
      */
     void RemoveMoney(int amount);
     
-    Playable* get_main_player();
-    std::vector<Playable*> get_players_in_group();
+    /* Decreases the health of one of the player's in the group
+     * @param index - the index of the player who's health decreases
+     * @param amount - how much damage the player takes
+     */
+    void DecreaseHealth(int index, int amount);
+    
+    Player* get_main_player();
+    std::vector<Player*> get_players_in_group();
     std::vector<Equipment> get_inventory();
     Vehicle* get_current_vehicle();
     int get_food_amount();

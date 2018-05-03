@@ -25,9 +25,9 @@ Group::Group(Vehicle* current_vehicle, int food_amount, int water_amount, int me
 
 std::string Group::StatInfo() {
     return "Food: " + std::to_string(food_amount_)
-            + "           Water: " + std::to_string(water_amount_)
+            + "                  Water: " + std::to_string(water_amount_)
             + "\nMedicine: " + std::to_string(medicine_amount_)
-            + "         Money: " + std::to_string(money_);
+            + "              Money: " + std::to_string(money_);
 }
 
 void Group::RemoveEquipment(Equipment item) {
@@ -52,18 +52,25 @@ bool Group::InInventory(Equipment item) {
     return false;
 }
 
-void Group::AddPlayer(Playable *player) {
+void Group::AddPlayer(Player* player) {
     players_in_group_.push_back(player);
 }
 
 
-void Group::RemovePlayer(Playable *player) {
+void Group::RemovePlayer(Player *player) {
     for (int i = 0; i < players_in_group_.size(); i++) {
         if (*player == *players_in_group_[i]) {
             players_in_group_.erase(players_in_group_.begin() + i);
             delete(player);
             break;
         }
+    }
+}
+
+void Group::RemoveAllGroupMembers() {
+    for (int i = 1; i < players_in_group_.size(); i++) {
+        players_in_group_.erase(players_in_group_.begin() + i);
+        delete(players_in_group_[i]);
     }
 }
 
@@ -123,15 +130,19 @@ void Group::RemoveMoney(int amount) {
     money_ -= amount;
 }
 
+void Group::DecreaseHealth(int index, int amount) {
+    players_in_group_[index]->set_health(players_in_group_[index]->get_health() - amount);
+}
+
 Vehicle* Group::get_current_vehicle() {
     return current_vehicle_;
 }
 
-Playable* Group::get_main_player() {
+Player* Group::get_main_player() {
     return players_in_group_[0];
 }
 
-std::vector<Playable*> Group::get_players_in_group() {
+std::vector<Player*> Group::get_players_in_group() {
     return players_in_group_;
 }
 

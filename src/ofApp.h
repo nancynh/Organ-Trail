@@ -31,6 +31,9 @@ class ofApp : public ofBaseApp {
         SELL_AMOUNT,
         HEAL_PERSON,
         HEAL_AMOUNT,
+        DEAD,
+        PLAYER_STATS,
+        KILL_PLAYER,
         END
     };
     
@@ -39,6 +42,7 @@ private:
     std::string user_input_;
     std::string previous_input_;
     ofTrueTypeFont game_font_;
+    ofImage screenshot_;
     ofImage start_bg_;
     ofImage setup_type_bg_;
     ofImage forest_bg_;
@@ -50,6 +54,7 @@ private:
     ofImage message_bg_;
     ofImage market_bg_;
     ofImage heal_bg_;
+    ofImage dead_bg_;
     
     double const kTextWidth = 0.03;
     double const kTextHeight = 0.75;
@@ -72,6 +77,10 @@ private:
     int distance_left_;
     Time current_time_;
     int current_hours_;
+    int user_hunger_level_;
+    int user_thirst_level_;
+    int group_hunger_level_;
+    int group_thirst_level_;
     Group group;
     
     int food_ration_amount;
@@ -103,6 +112,9 @@ private:
     void drawSellAmount();
     void drawHealPerson();
     void drawHealAmount();
+    void drawDead();
+    void drawPlayerStats();
+    void drawKillPlayer();
     
     void setupGroup();
     void setupPlayer(std::string name);
@@ -113,6 +125,7 @@ private:
     void Rest();
     void Eat();
     void Drink();
+    void KillZombies();
     void GatherFood();
     void GatherWater();
     void Travel();
@@ -128,8 +141,18 @@ private:
     void Heal();
     void HealPerson();
     void HealAmount();
+    void Kill();
+    void KillPlayer();
     bool findInGroup(std::string name);
-    
+    void Dead();
+    void Help();
+    void PlayerStats();
+    void ShowPlayerStats();
+    void IncreaseHungerThirstLevel();
+    void GroupRation();
+    void ChangePrice();
+    void DeathCheck();
+        
 public:
     ofApp();
     void setup();

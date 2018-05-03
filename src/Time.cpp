@@ -76,7 +76,7 @@ std::string Time::to_string() {
     } else {
         output += "Winter";
     }
-    return output + "\n";
+    return output;
 }
 
 Time::Seasons Time::get_current_season() {
@@ -90,3 +90,10 @@ int Time::get_day() {
 int Time::get_hour() {
     return hour_;
 }
+
+void Time::set_time(Time::Seasons season, int day, int hour) {
+    current_season_ = season;
+    day_ = day;
+    hour_ = hour;
+}
+
