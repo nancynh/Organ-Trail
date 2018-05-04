@@ -37,11 +37,11 @@ help - gives a list of commands that the player can do in the game
 
 TAB KEY - takes a screenshot of the game
 
-##Screenshots:
-![](https://imgur.com/gdsIeb3)
-![](https://imgur.com/wVbkBLy)
-![](https://imgur.com/CgzjkSL)
-![](https://imgur.com/M4lqvMM)
+## Screenshots:
+![](https://i.imgur.com/gdsIeb3.png)
+![](https://i.imgur.com/wVbkBLy.png)
+![](https://i.imgur.com/CgzjkSL.png)
+![](https://i.imgur.com/M4lqvMM.png)
 
 ## Credits:
 ofxTextSuite by [Furkan Üzümcü](https://github.com/Furkanzmc/ofxTextSuite)
