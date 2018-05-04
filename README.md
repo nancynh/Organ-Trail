@@ -1,4 +1,4 @@
-# CS 126 FinalProject: Organ Trail
+# Organ Trail
 ## About:
 You're in a zombie apocalypse! Oh no! Thankfully, you're with 4 other people. The goal of the game is to survive and reach Alaska at the very end. Be careful though! You may die from starvation, dehydration, or from getting attack by zombies too often! At the beginning of the game, you name the players in your group and set rations (these rations can be change anytime). Everyday, everyone will eat their rations.  
 
